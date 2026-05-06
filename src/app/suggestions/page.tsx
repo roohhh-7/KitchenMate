@@ -103,7 +103,7 @@ export default function SuggestionsPage() {
     <div className="flex-1 flex flex-col p-6 h-full overflow-y-auto">
       <header className="flex items-center justify-between mb-6">
         <div className="flex items-center">
-          <Link href="/" className={buttonVariants({ variant: "ghost", size: "icon", className: "rounded-full -ml-2 mr-2 text-zinc-500" })}>
+          <Link href="/cooking" className={buttonVariants({ variant: "ghost", size: "icon", className: "rounded-full -ml-2 mr-2 text-zinc-500" })}>
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <h1 className="text-xl font-bold font-outfit text-zinc-900">Suggestions</h1>

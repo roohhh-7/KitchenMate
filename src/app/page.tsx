@@ -1,97 +1,72 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ChefHat, Heart, Plus } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { useLocalStorage } from "@/hooks/use-local-storage";
-import { Recipe } from "@/data/recipes";
+import { ChefHat, ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
-export default function Home() {
-  const [pantry] = useLocalStorage<string[]>("kitchenmate-pantry", []);
-  const [savedRecipes] = useLocalStorage<Recipe[]>("kitchenmate-saved", []);
-
+export default function LandingPage() {
   return (
-    <div className="flex-1 flex flex-col p-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="flex-1 flex flex-col justify-center mb-12"
-      >
-        <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-6 text-orange-600">
-          <ChefHat size={32} />
-        </div>
-        <h1 className="text-4xl font-bold tracking-tight text-zinc-900 mb-3 font-outfit">
-          KitchenMate
-        </h1>
-        <p className="text-lg text-zinc-500 mb-10 max-w-[280px]">
-          Decide dinner in under 30 seconds.
-        </p>
+    <div className="flex-1 flex flex-col min-h-screen bg-[#fcfbf9] overflow-hidden relative">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[40%] bg-orange-100/50 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[40%] bg-zinc-100/50 blur-[120px] rounded-full" />
+      </div>
 
-        <div className="flex flex-col gap-4">
-          <Link 
-            href="/suggestions"
-            className={buttonVariants({ size: "lg", className: "w-full h-14 text-base rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white shadow-sm" })}
-          >
-              What Can I Cook?
-              <ArrowRight className="ml-2 w-5 h-5" />
+      <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="w-24 h-24 bg-zinc-900 rounded-[40px] flex items-center justify-center text-white mb-8 shadow-2xl shadow-zinc-900/20"
+        >
+          <ChefHat size={48} className="text-orange-500" />
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="text-center"
+        >
+          <h1 className="text-5xl font-black tracking-tight text-zinc-900 mb-4 font-outfit">
+            Kitchen<span className="text-orange-500">Mate</span>
+          </h1>
+          <p className="text-xl text-zinc-500 mb-12 max-w-[280px] mx-auto font-medium">
+            Decide dinner in under <span className="text-zinc-900 font-bold underline decoration-orange-500 underline-offset-4">30 seconds</span>.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="w-full max-w-[320px] flex flex-col gap-4"
+        >
+          <Link href="/home" className="w-full">
+            <Button size="lg" className="w-full h-16 text-lg rounded-3xl bg-zinc-900 hover:bg-zinc-800 text-white shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]">
+              Sign Up
+            </Button>
           </Link>
-
-          <Link 
-            href="/pantry"
-            className={buttonVariants({ variant: "outline", size: "lg", className: "w-full h-14 text-base rounded-2xl border-zinc-200 bg-white hover:bg-zinc-50 shadow-sm" })}
-          >
-              <Plus className="mr-2 w-5 h-5 text-zinc-400" />
-              Manage Pantry
-              {pantry.length > 0 && (
-                <span className="ml-auto bg-orange-100 text-orange-700 text-xs font-medium px-2 py-0.5 rounded-full">
-                  {pantry.length}
-                </span>
-              )}
+          
+          <Link href="/home" className="w-full">
+            <Button variant="outline" size="lg" className="w-full h-16 text-lg rounded-3xl border-zinc-200 bg-white hover:bg-zinc-50 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]">
+              Log In
+            </Button>
           </Link>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      {savedRecipes.length > 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          className="mt-auto"
+          transition={{ delay: 0.8, duration: 1 }}
+          className="absolute bottom-12 flex items-center gap-2 text-zinc-400 text-sm font-medium"
         >
-          <div className="flex items-center gap-2 mb-4 text-zinc-900">
-            <Heart className="w-4 h-4 text-red-500 fill-red-500" />
-            <h3 className="font-medium">Saved Recipes</h3>
-          </div>
-          <div className="flex overflow-x-auto gap-3 pb-4 snap-x hide-scrollbar">
-            {savedRecipes.map((recipe) => (
-              <Link
-                key={recipe.id}
-                href={`/recipe/${recipe.id}`}
-                className="flex-none w-48 bg-white border border-zinc-100 rounded-2xl overflow-hidden shadow-sm snap-start group"
-              >
-                <div className="h-24 bg-zinc-100 relative overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={recipe.imageUrl}
-                    alt={recipe.title}
-                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-3">
-                  <h4 className="font-medium text-sm text-zinc-900 truncate">
-                    {recipe.title}
-                  </h4>
-                  <p className="text-xs text-zinc-500 mt-1">
-                    {recipe.cookTime} • {recipe.difficulty}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <Sparkles size={16} className="text-orange-400" />
+          AI-Powered Kitchen Assistant
         </motion.div>
-      )}
+      </div>
     </div>
   );
 }
