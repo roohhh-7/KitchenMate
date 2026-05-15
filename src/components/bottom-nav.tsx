@@ -17,8 +17,8 @@ const navItems = [
 export function BottomNav() {
   const pathname = usePathname();
 
-  // Don't show navbar on the landing page
-  if (pathname === "/") return null;
+  // Don't show navbar on the landing or login page
+  if (pathname === "/" || pathname === "/login") return null;
 
   return (
     <div className="fixed bottom-6 left-0 right-0 z-50 px-6 pointer-events-none">

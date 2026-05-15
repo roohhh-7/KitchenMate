@@ -37,38 +37,45 @@ export default function PantryPage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col p-6 h-full">
+    <div className="flex-1 flex flex-col p-6 h-full relative overflow-hidden">
+      {/* Subtle Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">
+        <div className="absolute top-[-5%] right-[-10%] w-[50%] h-[30%] bg-orange-100/20 blur-[80px] rounded-full" />
+      </div>
+
       <header className="flex items-center mb-8">
-        <Link href="/cooking" className={buttonVariants({ variant: "ghost", size: "icon", className: "rounded-full -ml-2 mr-2 text-zinc-500" })}>
+        <Link href="/cooking" className={buttonVariants({ variant: "ghost", size: "icon", className: "rounded-2xl -ml-2 mr-2 text-zinc-400 hover:bg-zinc-100 transition-colors" })}>
           <ArrowLeft className="w-5 h-5" />
         </Link>
-        <h1 className="text-2xl font-bold font-outfit text-zinc-900">Your Pantry</h1>
+        <h1 className="text-2xl font-black font-outfit text-zinc-900 tracking-tight">Your Pantry</h1>
       </header>
 
-      <div className="flex gap-2 mb-8">
-        <Input
-          placeholder="Add an ingredient..."
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="rounded-2xl h-12 bg-zinc-50 border-zinc-200 focus-visible:ring-orange-200 focus-visible:ring-offset-0 focus-visible:border-orange-300"
-        />
+      <div className="flex gap-2 mb-10">
+        <div className="flex-1 relative group">
+          <Input
+            placeholder="Add an ingredient..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            className="rounded-[20px] h-14 bg-white/60 backdrop-blur-sm border-zinc-100 focus-visible:ring-orange-500/20 focus-visible:ring-offset-0 focus-visible:border-orange-500/50 shadow-sm transition-all font-medium pl-5"
+          />
+        </div>
         <Button 
           onClick={() => addIngredient(inputValue)}
-          className="h-12 w-12 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white flex-shrink-0"
+          className="h-14 w-14 rounded-[20px] bg-zinc-900 hover:bg-zinc-800 text-white flex-shrink-0 shadow-lg shadow-zinc-900/10 transition-transform active:scale-95"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-6 h-6" />
         </Button>
       </div>
 
-      <div className="mb-8">
-        <h2 className="text-sm font-medium text-zinc-500 mb-3">Quick Add</h2>
-        <div className="flex flex-wrap gap-2">
+      <div className="mb-10">
+        <h2 className="text-[11px] font-black text-zinc-400 mb-4 uppercase tracking-[0.2em]">Quick Add</h2>
+        <div className="flex flex-wrap gap-2.5">
           {COMMON_INGREDIENTS.filter(item => !pantry.includes(item)).map(item => (
             <Badge
               key={item}
               variant="outline"
-              className="px-3 py-1.5 rounded-full cursor-pointer hover:bg-zinc-100 border-zinc-200 text-zinc-600 transition-colors"
+              className="px-4 py-2 rounded-xl cursor-pointer hover:bg-orange-50 hover:border-orange-200 border-zinc-100 text-zinc-500 hover:text-orange-600 transition-all font-bold text-[11px] bg-white shadow-sm"
               onClick={() => addIngredient(item)}
             >
               + {item}
@@ -78,37 +85,49 @@ export default function PantryPage() {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <h2 className="text-sm font-medium text-zinc-500 mb-3">
-          Currently in Pantry ({pantry.length})
-        </h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-[11px] font-black text-zinc-400 uppercase tracking-[0.2em]">
+            Currently in Pantry
+          </h2>
+          <Badge variant="secondary" className="bg-orange-100 text-orange-600 border-none font-black text-[10px]">
+            {pantry.length} ITEMS
+          </Badge>
+        </div>
         
         {pantry.length === 0 ? (
-          <div className="text-center py-12 px-4 rounded-3xl border border-dashed border-zinc-200 bg-zinc-50/50">
-            <p className="text-zinc-500 text-sm">
-              Your pantry is empty. Add a few ingredients to get meal suggestions.
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-16 px-6 rounded-[32px] border-2 border-dashed border-zinc-100 bg-white/40 backdrop-blur-sm"
+          >
+            <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-4 text-zinc-300">
+              <Plus size={32} />
+            </div>
+            <p className="text-zinc-500 text-sm font-medium leading-relaxed">
+              Your pantry is empty. <br/>Add a few ingredients to get started.
             </p>
-          </div>
+          </motion.div>
         ) : (
-          <div className="flex flex-wrap gap-2">
-            <AnimatePresence>
+          <div className="flex flex-wrap gap-3">
+            <AnimatePresence mode="popLayout">
               {pantry.map((item) => (
                 <motion.div
                   key={item}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                  layout
                 >
                   <Badge
                     variant="secondary"
-                    className="px-3 py-1.5 rounded-full bg-orange-100 text-orange-800 hover:bg-orange-200 transition-colors flex items-center gap-1.5"
+                    className="px-4 py-2.5 rounded-2xl bg-zinc-900 text-white hover:bg-zinc-800 transition-all flex items-center gap-2 font-bold text-xs shadow-md shadow-zinc-900/10 group"
                   >
                     {item}
                     <button
                       onClick={() => removeIngredient(item)}
-                      className="hover:bg-orange-300 rounded-full p-0.5 transition-colors"
+                      className="text-white/40 hover:text-orange-400 transition-colors"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-3.5 h-3.5" />
                     </button>
                   </Badge>
                 </motion.div>
@@ -122,11 +141,11 @@ export default function PantryPage() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-6 pt-4 border-t border-zinc-100"
+          className="mt-6 pt-6"
         >
           <Link 
             href="/suggestions"
-            className={buttonVariants({ size: "lg", className: "w-full h-14 text-base rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white shadow-sm" })}
+            className={buttonVariants({ size: "lg", className: "w-full h-16 text-lg rounded-3xl bg-orange-500 hover:bg-orange-600 text-white shadow-xl shadow-orange-900/10 font-black transition-transform active:scale-[0.98]" })}
           >
             Find Recipes
           </Link>
