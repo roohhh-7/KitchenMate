@@ -30,8 +30,9 @@
   --radius-4xl: 48px;
   --radius-full: 9999px;
 
-  --shadow-premium: 0px 8px 30px rgba(0, 0, 0, 0.06);
-  --shadow-accent: 0px 10px 25px rgba(255, 107, 74, 0.25);
+  --shadow-premium: 0px 8px 30px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0px 10px 25px rgba(255, 107, 74, 0.2);
+  --shadow-elevated: 0px 15px 35px rgba(0, 0, 0, 0.08);
 }
 
 :root {
@@ -54,6 +55,9 @@
   --input: #ECE7E1;
   --ring: #FF6B4A;
   --radius: 28px;
+  
+  --font-inter: var(--font-inter);
+  --font-jakarta: var(--font-jakarta);
 }
 
 .dark {
@@ -69,21 +73,40 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv11";
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground font-inter antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
+    @apply font-jakarta font-bold tracking-tight;
   }
 }
 
-/* Custom Utilities for the Premium feel */
 @layer utilities {
-  .glass-card {
-    @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-premium;
+  .glass-nav {
+    @apply bg-white/90 backdrop-blur-[20px] border-t border-white/20;
   }
-  .pill-button {
-    @apply rounded-full px-8 py-4 font-semibold transition-all active:scale-95;
+  
+  .premium-gradient-bg {
+    background: linear-gradient(180deg, #FFF1E8 0%, #FFE5D6 50%, #FFF8F3 100%);
+  }
+  
+  .cta-gradient {
+    background: linear-gradient(135deg, #FF7B72 0%, #FF5E57 100%);
+  }
+
+  /* Grain Texture */
+  .grain-overlay {
+    position: relative;
+  }
+  .grain-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 50;
   }
 }
