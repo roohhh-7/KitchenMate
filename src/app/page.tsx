@@ -6,76 +6,53 @@ import { Button } from "@/components/ui/button";
 
 export default function LandingPage() {
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-[#f9d7d7] items-center justify-center p-6 font-inter">
-      {/* Main Card */}
-      <motion.div 
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="w-full max-w-sm bg-white rounded-[48px] overflow-hidden shadow-2xl flex flex-col h-[85vh] relative"
-      >
-        {/* Top Section: Illustration */}
-        <div className="relative flex-1 flex items-center justify-center p-8 bg-[#f9d7d7]/30">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="w-full h-full relative"
-          >
-            {/* Using the generated image */}
-            <img 
-              src="/illustration.png" 
-              alt="Salad Bowl Illustration" 
-              className="w-full h-full object-contain"
-            />
-          </motion.div>
-        </div>
+    <div className="flex-1 flex flex-col min-h-screen relative overflow-hidden bg-[#141414]">
+      {/* Cinematic Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/landing.png" 
+          alt="Premium Food Photography" 
+          className="w-full h-full object-cover opacity-70"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent" />
+      </div>
 
-        {/* Bottom Section: Content */}
-        <div className="p-10 pb-12 flex flex-col items-center text-center">
-          <motion.span 
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-[#ff6b6b] font-bold text-sm tracking-wide mb-4"
-          >
-            30K+ PREMIUM RECIPES
-          </motion.span>
-          
-          <motion.h1 
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-5xl font-black text-zinc-900 leading-[1.1] mb-12 font-outfit"
-          >
-            Cook like <br /> a chef
-          </motion.h1>
+      <div className="flex-1 flex flex-col justify-end p-8 pb-16 relative z-10 max-w-sm mx-auto w-full">
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
+        >
+          <h1 className="text-5xl font-serif font-bold text-white leading-[1.1] mb-6 tracking-tight">
+            Cook Beautiful Meals With What You Have
+          </h1>
+          <p className="text-white/70 text-lg mb-10 font-medium leading-relaxed">
+            Your pantry turned into personalized recipes.
+          </p>
 
-          <motion.div
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.7 }}
-            className="w-full"
-          >
-            <Link href="/login" className="w-full">
-              <Button 
-                size="lg" 
-                className="w-full h-18 rounded-3xl bg-[#ff6b6b] hover:bg-[#ff5252] text-white text-xl font-bold shadow-lg shadow-[#ff6b6b]/30 transition-transform active:scale-95"
-              >
-                Get Started
-              </Button>
-            </Link>
-          </motion.div>
-        </div>
+          <Link href="/login" className="w-full">
+            <Button 
+              size="lg" 
+              className="w-full h-18 rounded-[32px] bg-[#FF6A1A] hover:bg-[#E55A16] text-white text-xl font-bold transition-all active:scale-[0.98] shadow-xl shadow-[#FF6A1A]/20"
+            >
+              Get Started
+            </Button>
+          </Link>
+        </motion.div>
 
-        {/* Decorative shadow at the bottom of the image section */}
-        <div className="absolute top-[50%] left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none" />
-      </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.5 }}
+          transition={{ delay: 1, duration: 2 }}
+          className="mt-12 text-center text-white/40 text-[10px] font-bold uppercase tracking-[0.2em]"
+        >
+          Designed for the Modern Kitchen
+        </motion.div>
+      </div>
 
-      {/* Background blobs for extra flair */}
-      <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-white/20 blur-3xl rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-64 h-64 bg-white/20 blur-3xl rounded-full" />
+      {/* Subtle Grain Texture Overlay */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-overlay">
+        <div className="w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
       </div>
     </div>
   );

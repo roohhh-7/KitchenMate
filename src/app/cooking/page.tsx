@@ -6,23 +6,27 @@ import { motion } from "framer-motion";
 import { buttonVariants } from "@/components/ui/button";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 export default function CookingHub() {
   const [pantry] = useLocalStorage<string[]>("kitchenmate-pantry", []);
 
   return (
-    <div className="flex-1 flex flex-col p-6 pb-32 relative overflow-hidden">
-      {/* Subtle Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">
-        <div className="absolute top-[-5%] right-[-10%] w-[50%] h-[30%] bg-orange-100/20 blur-[80px] rounded-full" />
-      </div>
-
-      <header className="mb-10">
-        <h1 className="text-3xl font-black font-outfit text-zinc-900 tracking-tight leading-tight">Cooking <br/><span className="text-orange-500">Hub</span></h1>
-        <p className="text-zinc-500 font-medium">Your kitchen command center.</p>
+    <div className="flex-1 flex flex-col p-8 pb-32 bg-[#F6F3EE] relative overflow-hidden font-inter">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-[60%] h-[40%] bg-[#FF6A1A]/5 blur-[120px] rounded-full pointer-events-none" />
+      
+      <header className="mb-12 relative z-10">
+        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#7B7B7B] mb-2 block">
+          Kitchen Command
+        </span>
+        <h1 className="text-4xl font-serif font-bold text-[#141414] tracking-tight leading-tight">
+          Cooking <span className="text-[#FF6A1A]">Hub</span>
+        </h1>
+        <p className="text-[#7B7B7B] font-medium mt-2">Where your culinary vision comes to life.</p>
       </header>
 
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 relative z-10">
         {/* Main Action: AI Suggestions */}
         <motion.div
           whileHover={{ y: -5, scale: 1.01 }}
@@ -33,27 +37,29 @@ export default function CookingHub() {
         >
           <Link 
             href="/suggestions"
-            className="block bg-zinc-900 rounded-[40px] p-8 text-white shadow-[0_20px_50px_rgba(0,0,0,0.2)] overflow-hidden relative"
+            className="block bg-[#141414] rounded-[48px] p-10 text-white shadow-2xl shadow-[#141414]/20 overflow-hidden relative"
           >
             <div className="relative z-10 flex flex-col h-full">
-              <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-md border border-white/10">
-                <Sparkles className="w-7 h-7 text-orange-400" />
+              <div className="w-16 h-16 bg-white/10 rounded-[24px] flex items-center justify-center mb-8 backdrop-blur-md border border-white/10">
+                <Sparkles className="w-8 h-8 text-[#FF6A1A]" />
               </div>
-              <h2 className="text-3xl font-black font-outfit mb-2 leading-tight">Find My <br/>Next Meal</h2>
-              <p className="text-zinc-400 text-[13px] mb-10 max-w-[220px] font-medium leading-relaxed">
-                AI-powered suggestions tailored to your pantry.
+              <h2 className="text-3xl font-serif font-bold mb-3 leading-tight">
+                Discover <br/>Your Next Meal
+              </h2>
+              <p className="text-[#7B7B7B] text-sm mb-12 max-w-[220px] font-medium leading-relaxed">
+                AI-powered suggestions tailored to your signature pantry.
               </p>
-              <div className="mt-auto flex items-center font-black text-sm uppercase tracking-widest group-hover:gap-3 transition-all text-orange-500">
-                Let&apos;s Cook <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
+              <div className="mt-auto flex items-center font-bold text-xs uppercase tracking-[0.2em] group-hover:gap-4 transition-all text-[#FF6A1A]">
+                Start Exploring <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-2" />
               </div>
             </div>
-            <ChefHat className="absolute -right-12 -top-12 w-64 h-64 text-white/5 rotate-12 pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-32 h-32 bg-orange-500/10 blur-[60px] rounded-full" />
+            <ChefHat className="absolute -right-16 -top-16 w-80 h-80 text-white/5 rotate-12 pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-48 h-48 bg-[#FF6A1A]/10 blur-[80px] rounded-full" />
           </Link>
         </motion.div>
 
         {/* Secondary Actions */}
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-2 gap-6">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -61,13 +67,13 @@ export default function CookingHub() {
           >
             <Link 
               href="/pantry"
-              className="bg-white/60 backdrop-blur-md border border-zinc-100 rounded-[32px] p-6 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-all active:scale-95 h-full"
+              className="bg-white rounded-[32px] p-8 flex flex-col items-center text-center shadow-soft border border-[#E5E1D8]/20 hover:border-[#FF6A1A]/20 transition-all active:scale-95 h-full"
             >
-              <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-4">
-                <Refrigerator className="w-6 h-6" />
+              <div className="w-14 h-14 bg-[#F6F3EE] text-[#141414] rounded-[20px] flex items-center justify-center mb-5 group-hover:text-[#FF6A1A]">
+                <Refrigerator className="w-7 h-7" />
               </div>
-              <h3 className="font-black font-outfit text-zinc-900">My Pantry</h3>
-              <p className="text-[10px] font-black text-zinc-400 mt-2 uppercase tracking-widest bg-zinc-50 px-2 py-0.5 rounded-full">{pantry.length} Items</p>
+              <h3 className="font-serif font-bold text-xl text-[#141414]">The Fridge</h3>
+              <p className="text-[10px] font-bold text-[#7B7B7B] mt-2 uppercase tracking-widest bg-[#F6F3EE] px-3 py-1 rounded-full">{pantry.length} Items</p>
             </Link>
           </motion.div>
 
@@ -78,34 +84,33 @@ export default function CookingHub() {
           >
             <Link 
               href="/home"
-              className="bg-white/60 backdrop-blur-md border border-zinc-100 rounded-[32px] p-6 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-all active:scale-95 h-full"
+              className="bg-white rounded-[32px] p-8 flex flex-col items-center text-center shadow-soft border border-[#E5E1D8]/20 hover:border-[#FF6A1A]/20 transition-all active:scale-95 h-full"
             >
-              <div className="w-12 h-12 bg-zinc-50 text-zinc-900 rounded-2xl flex items-center justify-center mb-4">
-                <BookOpen className="w-6 h-6" />
+              <div className="w-14 h-14 bg-[#F6F3EE] text-[#141414] rounded-[20px] flex items-center justify-center mb-5">
+                <BookOpen className="w-7 h-7" />
               </div>
-              <h3 className="font-black font-outfit text-zinc-900">Recipe Book</h3>
-              <p className="text-[10px] font-black text-zinc-400 mt-2 uppercase tracking-widest bg-zinc-50 px-2 py-0.5 rounded-full">Browse All</p>
+              <h3 className="font-serif font-bold text-xl text-[#141414]">Cookbook</h3>
+              <p className="text-[10px] font-bold text-[#7B7B7B] mt-2 uppercase tracking-widest bg-[#F6F3EE] px-3 py-1 rounded-full">Archive</p>
             </Link>
           </motion.div>
         </div>
 
-        {/* Featured Card */}
+        {/* Premium Tip Card */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-orange-50/50 border border-orange-100/50 rounded-[32px] p-6 mt-4 relative overflow-hidden"
+          className="bg-white rounded-[40px] p-8 mt-4 relative overflow-hidden shadow-soft border border-[#E5E1D8]/10"
         >
           <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-4">
-              <Badge className="bg-orange-500 hover:bg-orange-500 text-white border-none rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">Tip</Badge>
-              <span className="text-[11px] font-black text-orange-900 uppercase tracking-widest">Cooking Hack</span>
+            <div className="flex items-center gap-3 mb-5">
+              <Badge className="bg-[#FF6A1A] hover:bg-[#FF6A1A] text-white border-none rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest">Culinary Tip</Badge>
             </div>
-            <p className="text-sm text-orange-800 leading-relaxed font-bold">
+            <p className="text-lg text-[#141414] font-serif font-bold leading-relaxed">
               &quot;Adding a pinch of salt to your onions while sautéing helps them release moisture and cook faster!&quot;
             </p>
           </div>
-          <Sparkles className="absolute -right-4 -top-4 w-20 h-20 text-orange-200/20" />
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF6A1A]/5 blur-[40px] rounded-full" />
         </motion.div>
       </div>
     </div>

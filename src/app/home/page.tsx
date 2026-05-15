@@ -2,15 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useLocalStorage } from "@/hooks/use-local-storage";
-import { recipes, Recipe } from "@/data/recipes";
 import { motion } from "framer-motion";
 import { Heart, Clock, ChefHat, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export default function HomePage() {
   const [pantry] = useLocalStorage<string[]>("kitchenmate-pantry", []);
-  const [savedRecipes] = useLocalStorage<Recipe[]>("kitchenmate-saved", []);
+  const [savedRecipes] = useLocalStorage<any[]>("kitchenmate-saved", []);
   const [greeting, setGreeting] = useState("Good Morning");
 
   useEffect(() => {
@@ -20,81 +19,68 @@ export default function HomePage() {
     else setGreeting("Good Morning");
   }, []);
 
-  // Simple logic for recommendations: pick 3 recipes
-  // In a real app, this would be more complex
-  const recommendedRecipes = recipes.slice(0, 3);
-
   return (
-    <div className="flex-1 flex flex-col p-6 pb-32 relative overflow-hidden">
-      {/* Subtle Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">
-        <div className="absolute top-[-5%] right-[-10%] w-[50%] h-[30%] bg-orange-100/30 blur-[80px] rounded-full" />
-        <div className="absolute bottom-[20%] left-[-10%] w-[40%] h-[20%] bg-zinc-100/50 blur-[80px] rounded-full" />
-      </div>
-
+    <div className="flex-1 flex flex-col p-8 pb-32 bg-[#F6F3EE] font-inter">
       <motion.header
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8 relative"
+        className="mb-10"
       >
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-black font-outfit text-zinc-900 leading-tight">
-              {greeting}, <br/>
-              <span className="text-orange-500">Rohit 👋</span>
-            </h1>
-            <p className="text-zinc-500 mt-1 font-medium">Ready to cook something delicious?</p>
-          </div>
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-12 h-12 rounded-2xl bg-white border border-zinc-100 shadow-sm flex items-center justify-center text-zinc-400"
-          >
-            <Heart size={20} />
-          </motion.div>
-        </div>
+        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#7B7B7B] mb-2 block">
+          Welcome Back
+        </span>
+        <h1 className="text-4xl font-serif font-bold text-[#141414] leading-tight">
+          {greeting}, <br/>
+          <span className="text-[#FF6A1A]">Rohit</span>
+        </h1>
       </motion.header>
 
-      {/* Stats Quick View */}
-      <div className="grid grid-cols-2 gap-4 mb-10">
+      {/* Premium Stats Section */}
+      <div className="grid grid-cols-2 gap-5 mb-12">
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/60 backdrop-blur-md border border-zinc-100 rounded-[32px] p-6 flex flex-col items-center text-center shadow-sm"
+          className="bg-white rounded-[32px] p-6 shadow-soft border border-[#E5E1D8]/30 flex flex-col items-center text-center group transition-all hover:border-[#FF6A1A]/20"
         >
-          <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 mb-3">
-            <ChefHat size={20} />
+          <div className="w-12 h-12 rounded-2xl bg-[#F6F3EE] flex items-center justify-center text-[#141414] mb-3 group-hover:bg-[#FF6A1A]/10 group-hover:text-[#FF6A1A] transition-colors">
+            <ChefHat size={24} />
           </div>
-          <span className="text-2xl font-black text-zinc-900 font-outfit">{pantry.length}</span>
-          <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-1">Pantry Items</span>
+          <span className="text-3xl font-serif font-bold text-[#141414]">{pantry.length}</span>
+          <span className="text-[10px] text-[#7B7B7B] font-bold uppercase tracking-widest mt-1">Pantry Items</span>
         </motion.div>
+        
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/60 backdrop-blur-md border border-zinc-100 rounded-[32px] p-6 flex flex-col items-center text-center shadow-sm"
+          className="bg-white rounded-[32px] p-6 shadow-soft border border-[#E5E1D8]/30 flex flex-col items-center text-center group transition-all hover:border-[#FF6A1A]/20"
         >
-          <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center text-zinc-600 mb-3">
-            <Heart size={20} />
+          <div className="w-12 h-12 rounded-2xl bg-[#F6F3EE] flex items-center justify-center text-[#141414] mb-3 group-hover:bg-[#FF6A1A]/10 group-hover:text-[#FF6A1A] transition-colors">
+            <Heart size={24} />
           </div>
-          <span className="text-2xl font-black text-zinc-900 font-outfit">{savedRecipes.length}</span>
-          <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-1">Saved Meals</span>
+          <span className="text-3xl font-serif font-bold text-[#141414]">{savedRecipes.length}</span>
+          <span className="text-[10px] text-[#7B7B7B] font-bold uppercase tracking-widest mt-1">Saved Meals</span>
         </motion.div>
       </div>
 
-      {/* Featured/Recommended Section */}
-      <section className="mb-10">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
-            <div className="w-1 h-6 bg-orange-500 rounded-full" />
-            <h3 className="text-xl font-black font-outfit text-zinc-900">For You</h3>
+      {/* Curated Recommendations */}
+      <section className="mb-12">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-1.5 h-6 bg-[#FF6A1A] rounded-full" />
+            <h3 className="text-2xl font-serif font-bold text-[#141414]">Curated For You</h3>
           </div>
-          <button className="text-sm font-bold text-orange-600">See All</button>
+          <button className="text-xs font-bold uppercase tracking-widest text-[#FF6A1A] hover:underline underline-offset-4 transition-all">
+            See All
+          </button>
         </div>
 
-        <div className="flex flex-col gap-4">
-          {recommendedRecipes.map((recipe, index) => (
+        <div className="flex flex-col gap-8">
+          {[
+            { id: 1, title: "Artisan Pepperoni Pizza", time: "25 min", difficulty: "Medium", img: "/recipe1.png" },
+            { id: 2, title: "Creamy Herb Fettuccine", time: "15 min", difficulty: "Easy", img: "/recipe2.png" }
+          ].map((recipe, index) => (
             <motion.div
               key={recipe.id}
               initial={{ opacity: 0, y: 20 }}
@@ -103,33 +89,32 @@ export default function HomePage() {
             >
               <Link 
                 href={`/recipe/${recipe.id}`}
-                className="flex items-center bg-white border border-zinc-100 rounded-[28px] p-3.5 shadow-sm hover:shadow-md transition-all group active:scale-[0.98]"
+                className="block bg-white rounded-[40px] p-4 shadow-soft border border-[#E5E1D8]/20 group active:scale-[0.98] transition-all"
               >
-                <div className="w-20 h-20 rounded-[20px] overflow-hidden shrink-0 shadow-inner">
+                <div className="relative h-64 rounded-[32px] overflow-hidden mb-6">
                   <img 
-                    src={recipe.imageUrl} 
+                    src={recipe.img} 
                     alt={recipe.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   />
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md w-10 h-10 rounded-2xl flex items-center justify-center text-[#141414] shadow-sm hover:text-red-500 transition-colors">
+                    <Heart size={18} />
+                  </div>
                 </div>
-                <div className="ml-4 flex-1">
-                  <h4 className="font-bold text-zinc-900 line-clamp-1 font-outfit">{recipe.title}</h4>
-                  <div className="flex items-center gap-3 mt-1.5">
-                    <div className="flex items-center text-[11px] font-medium text-zinc-500">
-                      <Clock className="w-3.5 h-3.5 mr-1 text-orange-400" />
-                      {recipe.cookTime}
+                
+                <div className="px-4 pb-4">
+                  <h4 className="text-2xl font-serif font-bold text-[#141414] mb-3 leading-tight">
+                    {recipe.title}
+                  </h4>
+                  <div className="flex items-center gap-5">
+                    <div className="flex items-center text-[11px] font-bold text-[#7B7B7B] uppercase tracking-wider">
+                      <Clock className="w-4 h-4 mr-2 text-[#FF6A1A]" />
+                      {recipe.time}
                     </div>
-                    <div className="flex items-center text-[11px] font-medium text-zinc-500">
-                      <ChefHat className="w-3.5 h-3.5 mr-1 text-orange-400" />
+                    <div className="flex items-center text-[11px] font-bold text-[#7B7B7B] uppercase tracking-wider">
+                      <ChefHat className="w-4 h-4 mr-2 text-[#FF6A1A]" />
                       {recipe.difficulty}
                     </div>
-                  </div>
-                  <div className="mt-3 flex gap-1.5">
-                    {recipe.ingredients.slice(0, 2).map(ing => (
-                      <Badge key={ing} variant="secondary" className="text-[9px] py-0.5 px-2 bg-zinc-50 text-zinc-500 border-none font-bold uppercase tracking-tight">
-                        {ing}
-                      </Badge>
-                    ))}
                   </div>
                 </div>
               </Link>
@@ -138,22 +123,27 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Quick Access Section */}
+      {/* Floating Action CTA */}
       <section className="mt-4">
         <motion.div 
           whileHover={{ y: -5 }}
-          className="bg-zinc-900 rounded-[32px] p-8 text-white overflow-hidden relative shadow-xl shadow-zinc-900/20"
+          className="bg-[#151515] rounded-[40px] p-10 text-white overflow-hidden relative shadow-2xl shadow-[#151515]/20"
         >
           <div className="relative z-10">
-            <Badge className="mb-4 bg-orange-500 hover:bg-orange-600 border-none text-[10px] font-black uppercase tracking-widest px-3 py-1">AI Powered</Badge>
-            <h3 className="text-2xl font-black font-outfit mb-2 leading-tight">Feeling <br/>Adventurous?</h3>
-            <p className="text-zinc-400 text-sm mb-6 max-w-[180px] font-medium">Let AI decide your perfect meal based on your pantry.</p>
-            <Link href="/cooking" className="inline-flex items-center justify-center h-14 px-8 bg-orange-500 text-white rounded-2xl font-bold text-sm shadow-lg shadow-orange-900/20 transition-transform active:scale-95">
-              Start Magic
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#FF6A1A] mb-4 block">
+              Smart Assistant
+            </span>
+            <h3 className="text-3xl font-serif font-bold mb-4 leading-tight">
+              Turn your pantry <br/> into a masterpiece.
+            </h3>
+            <p className="text-[#7B7B7B] text-sm mb-10 max-w-[200px] leading-relaxed">
+              Let AI curate the perfect meal from what you have on hand.
+            </p>
+            <Link href="/cooking" className="inline-flex items-center justify-center h-16 px-10 bg-[#FF6A1A] text-white rounded-[24px] font-bold text-lg shadow-xl shadow-[#FF6A1A]/20 transition-all active:scale-[0.95]">
+              Let&apos;s Cook
             </Link>
           </div>
-          <Sparkles className="absolute -right-6 -bottom-6 w-40 h-40 text-orange-500/10 -rotate-12" />
-          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 blur-[50px] rounded-full" />
+          <Sparkles className="absolute -right-10 -bottom-10 w-48 h-48 text-[#FF6A1A]/5 -rotate-12" />
         </motion.div>
       </section>
     </div>
