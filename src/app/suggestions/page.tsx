@@ -54,8 +54,6 @@ export default function SuggestionsPage() {
         throw new Error(data.error || "Failed to fetch");
       }
 
-      if (data.error) throw new Error(data.error);
-
       setSuggestions(data.recipes);
     } catch (err) {
       console.error(err);
@@ -69,7 +67,6 @@ export default function SuggestionsPage() {
     if (isPantryHydrated) {
       fetchSuggestions();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPantryHydrated]);
 
   const handleSave = (recipe: Recipe) => {
@@ -86,150 +83,102 @@ export default function SuggestionsPage() {
 
   if (isPantryHydrated && error === "pantry_empty") {
     return (
-      <div className="flex-1 flex flex-col p-6 h-full items-center justify-center text-center relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">
-          <div className="absolute top-[-10%] right-[-10%] w-[80%] h-[50%] bg-orange-100/30 blur-[100px] rounded-full" />
-        </div>
-        <div className="w-20 h-20 bg-zinc-50 rounded-3xl flex items-center justify-center text-zinc-300 mb-8 shadow-inner">
+      <div className="flex-1 flex flex-col p-6 h-full items-center justify-center text-center bg-[#FAF7F2]">
+        <div className="w-24 h-24 bg-white rounded-[32px] flex items-center justify-center text-[#D0C9C0] mb-8 shadow-premium">
           <ChefHat size={40} />
         </div>
-        <h2 className="text-2xl font-black font-outfit text-zinc-900 mb-3">Pantry is empty</h2>
-        <p className="text-zinc-500 mb-10 max-w-[280px] font-medium leading-relaxed">
-          Add a few ingredients to your pantry to unlock AI-powered meal suggestions.
+        <h2 className="text-[28px] font-bold text-[#181818] mb-3">Pantry is empty</h2>
+        <p className="text-[#777777] text-[15px] font-medium leading-relaxed mb-10 max-w-[260px]">
+          Add ingredients to your luxury pantry to unlock curated recipes.
         </p>
-        <Link href="/pantry" className={buttonVariants({ size: "lg", className: "h-16 rounded-3xl bg-zinc-900 text-white px-10 font-bold shadow-xl shadow-zinc-900/20 transition-transform active:scale-95" })}>
-          Go to Pantry
+        <Link href="/pantry" className={buttonVariants({ size: "lg", className: "h-[64px] px-10 rounded-full bg-[#181818] text-white font-bold" })}>
+          Update Pantry
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 flex flex-col p-6 h-full relative overflow-hidden">
-      {/* Subtle Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">
-        <div className="absolute top-[-5%] right-[-10%] w-[50%] h-[30%] bg-orange-100/20 blur-[80px] rounded-full" />
-      </div>
-
-      <header className="flex items-center justify-between mb-8">
+    <div className="flex-1 flex flex-col bg-[#FAF7F2] p-6 pb-32 font-inter relative">
+      <header className="flex items-center justify-between mb-10 pt-4">
         <div className="flex items-center">
-          <Link href="/cooking" className={buttonVariants({ variant: "ghost", size: "icon", className: "rounded-2xl -ml-2 mr-3 text-zinc-400 hover:bg-zinc-100 transition-colors" })}>
-            <ArrowLeft className="w-5 h-5" />
+          <Link href="/home" className="mr-4 text-[#181818] p-2 -ml-2">
+            <ArrowLeft size={24} />
           </Link>
-          <h1 className="text-2xl font-black font-outfit text-zinc-900 tracking-tight">Suggestions</h1>
+          <h1 className="text-[32px] font-bold text-[#181818] tracking-tight">Curated</h1>
         </div>
         <Button 
           variant="outline" 
           size="icon" 
           onClick={fetchSuggestions} 
           disabled={isLoading}
-          className="rounded-2xl border-zinc-100 shadow-sm text-zinc-400 hover:text-orange-500 hover:border-orange-200 transition-all"
+          className="rounded-2xl border-[#ECE7E1] text-[#777777] shadow-sm"
         >
           <RefreshCw className={`w-5 h-5 ${isLoading ? "animate-spin" : ""}`} />
         </Button>
       </header>
 
       {isLoading ? (
-        <div className="flex flex-col gap-8 pb-10">
+        <div className="space-y-12">
           {[1, 2].map((i) => (
-            <div key={i} className="flex flex-col gap-4">
-              <Skeleton className="w-full h-56 rounded-[32px]" />
-              <div className="px-2 space-y-3">
+            <div key={i} className="space-y-6">
+              <Skeleton className="w-full h-[320px] rounded-[32px]" />
+              <div className="space-y-4">
                 <Skeleton className="w-3/4 h-8 rounded-xl" />
                 <Skeleton className="w-full h-5 rounded-lg" />
-                <Skeleton className="w-5/6 h-5 rounded-lg" />
               </div>
             </div>
           ))}
         </div>
-      ) : error === "fetch_error" ? (
-        <div className="flex-1 flex flex-col items-center justify-center text-center">
-          <p className="text-zinc-500 mb-6 font-medium">Something went wrong. <br/>Please try again.</p>
-          <Button onClick={fetchSuggestions} variant="outline" className="h-14 px-8 rounded-2xl border-zinc-200 font-bold">
-            Retry
-          </Button>
-        </div>
       ) : (
-        <div className="flex flex-col gap-10 pb-20">
+        <div className="space-y-12">
           <AnimatePresence mode="popLayout">
             {suggestions.map((suggestion, index) => (
               <motion.div
+                key={suggestion.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.15, duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-                key={suggestion.id}
-                className="bg-white/70 backdrop-blur-md border border-zinc-100 rounded-[36px] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.03)] flex flex-col group active:scale-[0.99] transition-transform"
+                transition={{ delay: index * 0.15, duration: 0.8 }}
+                className="group relative"
               >
-                <div className="relative h-56 bg-zinc-100 overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                <Link href={`/recipe/${suggestion.id}`} className="block relative h-[380px] rounded-[32px] overflow-hidden shadow-2xl group active:scale-[0.99] transition-transform">
                   <img
                     src={suggestion.imageUrl}
                     alt={suggestion.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
                   
-                  <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-2xl text-[10px] font-black text-zinc-900 shadow-sm flex items-center gap-1.5 uppercase tracking-wider">
-                    <Sparkles size={12} className="text-orange-500" />
-                    {suggestion.matchPercentage}% Match
-                  </div>
-                  
-                  <button
-                    onClick={() => handleSave(suggestion.fullRecipe)}
-                    className="absolute top-4 right-4 w-10 h-10 bg-white/95 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-sm text-zinc-400 transition-all hover:text-red-500 active:scale-90"
-                  >
-                    <Heart className={`w-5 h-5 ${isSaved(suggestion.id) ? "fill-red-500 text-red-500" : ""}`} />
-                  </button>
-                </div>
-                
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <h3 className="text-2xl font-black text-zinc-900 font-outfit leading-[1.1]">
-                      {suggestion.title}
-                    </h3>
-                  </div>
-
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="flex items-center text-[11px] font-bold text-zinc-500 uppercase tracking-tight">
-                      <Clock className="w-4 h-4 mr-1.5 text-orange-500" />
-                      {suggestion.cookTime}
-                    </div>
-                    <div className="flex items-center text-[11px] font-bold text-zinc-500 uppercase tracking-tight">
-                      <ChefHat className="w-4 h-4 mr-1.5 text-orange-500" />
-                      {suggestion.fullRecipe.difficulty}
-                    </div>
+                  <div className="absolute top-6 left-6 flex items-center gap-2 bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl shadow-xl">
+                    <Sparkles size={14} className="text-[#FF6B4A]" />
+                    <span className="text-[12px] font-black text-[#181818] uppercase tracking-wider">{suggestion.matchPercentage}% Match</span>
                   </div>
                   
-                  <p className="text-[13px] text-zinc-500 mb-6 font-medium leading-relaxed line-clamp-2">
-                    {suggestion.description}
-                  </p>
-
-                  <div className="bg-orange-50/50 p-4 rounded-2xl mb-6 text-[12px] text-orange-800 border border-orange-100/50 font-medium leading-relaxed">
-                    <span className="font-black text-[10px] uppercase tracking-widest text-orange-600 block mb-1">AI Recommendation</span> 
-                    {suggestion.reason}
-                  </div>
-
-                  {suggestion.missingIngredients.length > 0 && (
-                    <div className="mb-6">
-                      <p className="text-[10px] font-black text-zinc-400 mb-3 uppercase tracking-widest">Missing Essentials</p>
-                      <div className="flex flex-wrap gap-2">
-                        {suggestion.missingIngredients.map(item => (
-                          <Badge key={item} variant="secondary" className="bg-zinc-50 text-zinc-400 hover:bg-zinc-100 border-none px-2.5 py-1 text-[10px] font-bold uppercase tracking-tight">
-                            {item}
-                          </Badge>
-                        ))}
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="flex items-center text-[12px] font-bold text-white/80 uppercase tracking-widest">
+                        <Clock className="w-4 h-4 mr-2 text-[#FFB38A]" />
+                        {suggestion.cookTime}
+                      </div>
+                      <div className="flex items-center text-[12px] font-bold text-white/80 uppercase tracking-widest">
+                        <ChefHat className="w-4 h-4 mr-2 text-[#FFB38A]" />
+                        {suggestion.fullRecipe.difficulty}
                       </div>
                     </div>
-                  )}
-
-                  <div className="mt-auto pt-2">
-                    <Link 
-                      href={`/recipe/${suggestion.id}`}
-                      className={buttonVariants({ className: "w-full h-14 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white shadow-lg shadow-zinc-900/10 font-bold text-sm transition-transform active:scale-[0.98]" })}
-                    >
-                      View Full Recipe
-                    </Link>
+                    <h3 className="text-[36px] font-bold text-white leading-[1.1] font-outfit mb-4">{suggestion.title}</h3>
                   </div>
+                </Link>
+                
+                <button
+                  onClick={() => handleSave(suggestion.fullRecipe)}
+                  className="absolute bottom-32 right-8 w-16 h-16 bg-white rounded-full flex items-center justify-center text-[#181818] shadow-2xl active:scale-90 transition-all z-20 border border-white/20"
+                >
+                  <Heart className={`w-6 h-6 ${isSaved(suggestion.id) ? "fill-[#FF6B4A] text-[#FF6B4A]" : ""}`} />
+                </button>
+
+                <div className="mt-8 px-2">
+                  <p className="text-[12px] font-bold text-[#FF6B4A] uppercase tracking-[0.2em] mb-2">Chef&apos;s Note</p>
+                  <p className="text-[15px] text-[#777777] font-medium leading-relaxed italic">&quot;{suggestion.reason}&quot;</p>
                 </div>
               </motion.div>
             ))}

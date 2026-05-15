@@ -1,94 +1,84 @@
 "use client";
 
 import Link from "next/link";
-import { Heart, Clock, ChefHat, ArrowLeft, Trash2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, Clock, ChefHat, Heart, Trash2 } from "lucide-react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { Recipe } from "@/data/recipes";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
 
 export default function FavoritesPage() {
   const [savedRecipes, setSavedRecipes] = useLocalStorage<Recipe[]>("kitchenmate-saved", []);
 
-  const removeFavorite = (id: string, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const removeRecipe = (id: string) => {
     setSavedRecipes(savedRecipes.filter(r => r.id !== id));
-    toast("Recipe removed from favorites.");
   };
 
   return (
-    <div className="flex-1 flex flex-col p-6 pb-32">
-      <header className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <Link href="/home" className="p-2 -ml-2 text-zinc-400 hover:text-zinc-600 transition-colors">
-            <ArrowLeft className="w-5 h-5" />
+    <div className="flex-1 flex flex-col bg-[#FAF7F2] p-6 pb-32 font-inter">
+      <header className="flex items-center justify-between mb-10 pt-4">
+        <div className="flex items-center">
+          <Link href="/home" className="mr-4 text-[#181818] p-2 -ml-2">
+            <ArrowLeft size={24} />
           </Link>
-          <h1 className="text-3xl font-bold font-outfit text-zinc-900">Favorites</h1>
+          <h1 className="text-[32px] font-bold text-[#181818] tracking-tight">Favorites</h1>
         </div>
-        <p className="text-zinc-500">Your curated collection of delicious meals.</p>
       </header>
 
       {savedRecipes.length === 0 ? (
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="flex-1 flex flex-col items-center justify-center text-center py-20"
-        >
-          <div className="w-20 h-20 bg-zinc-50 rounded-full flex items-center justify-center mb-6 text-zinc-200">
-            <Heart className="w-10 h-10" />
+        <div className="flex-1 flex flex-col items-center justify-center text-center px-10">
+          <div className="w-24 h-24 bg-white rounded-[32px] flex items-center justify-center text-[#D0C9C0] mb-8 shadow-premium">
+            <Heart size={40} className="fill-current opacity-20" />
           </div>
-          <h2 className="text-xl font-bold text-zinc-900 font-outfit">No favorites yet</h2>
-          <p className="text-zinc-500 mt-2 max-w-[200px]">
-            Explore recipes and heart the ones you love to see them here!
+          <h2 className="text-[24px] font-bold text-[#181818] mb-3">No favorites yet</h2>
+          <p className="text-[#777777] text-[15px] font-medium leading-relaxed mb-10">
+            Start curating your luxury recipe collection.
           </p>
-          <Link href="/cooking" className={buttonVariants({ variant: "outline", className: "mt-8 rounded-2xl" })}>
+          <Link href="/home" className="inline-flex items-center justify-center h-16 px-10 bg-[#181818] text-white rounded-full font-bold text-[16px] shadow-xl active:scale-95 transition-all">
             Explore Recipes
           </Link>
-        </motion.div>
+        </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6">
+        <div className="flex flex-col gap-10">
           <AnimatePresence mode="popLayout">
-            {savedRecipes.map((recipe) => (
+            {savedRecipes.map((recipe, index) => (
               <motion.div
                 key={recipe.id}
-                layout
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                className="group relative"
               >
-                <Link 
-                  href={`/recipe/${recipe.id}`}
-                  className="block bg-white border border-zinc-100 rounded-[32px] overflow-hidden shadow-sm hover:shadow-md transition-shadow group"
-                >
-                  <div className="h-40 bg-zinc-100 relative">
-                    <img 
-                      src={recipe.imageUrl} 
-                      alt={recipe.title}
-                      className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                    />
-                    <button 
-                      onClick={(e) => removeFavorite(recipe.id, e)}
-                      className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-red-500 shadow-lg transition-transform active:scale-90"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold font-outfit text-zinc-900 mb-2">{recipe.title}</h3>
-                    <div className="flex items-center gap-4 text-sm text-zinc-500">
-                      <div className="flex items-center">
-                        <Clock className="w-4 h-4 mr-1.5" />
+                <Link href={`/recipe/${recipe.id}`} className="block relative h-[380px] rounded-[32px] overflow-hidden shadow-2xl group active:scale-[0.99] transition-transform">
+                  <img 
+                    src={recipe.imageUrl} 
+                    alt={recipe.title}
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="flex items-center text-[12px] font-bold text-white/80 uppercase tracking-widest">
+                        <Clock className="w-4 h-4 mr-2 text-[#FFB38A]" />
                         {recipe.cookTime}
                       </div>
-                      <div className="flex items-center">
-                        <ChefHat className="w-4 h-4 mr-1.5" />
+                      <div className="flex items-center text-[12px] font-bold text-white/80 uppercase tracking-widest">
+                        <ChefHat className="w-4 h-4 mr-2 text-[#FFB38A]" />
                         {recipe.difficulty}
                       </div>
                     </div>
+                    <h3 className="text-[32px] font-bold text-white leading-[1.1] mb-2 font-outfit">{recipe.title}</h3>
                   </div>
                 </Link>
+
+                <button 
+                  onClick={() => removeRecipe(recipe.id)}
+                  className="absolute top-6 right-6 w-14 h-14 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-[#181818] shadow-xl hover:text-red-500 transition-all active:scale-90 z-20 border border-white/20"
+                >
+                  <Trash2 size={24} />
+                </button>
               </motion.div>
             ))}
           </AnimatePresence>

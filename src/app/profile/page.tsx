@@ -1,71 +1,113 @@
 "use client";
 
 import Link from "next/link";
-import { User, Settings, Refrigerator, Heart, ChefHat, LogOut, ChevronRight } from "lucide-react";
+import { ArrowLeft, Settings, CreditCard, Bell, Shield, LogOut, ChevronRight, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { Recipe } from "@/data/recipes";
 
 export default function ProfilePage() {
-  const [pantry] = useLocalStorage<string[]>("kitchenmate-pantry", []);
   const [savedRecipes] = useLocalStorage<Recipe[]>("kitchenmate-saved", []);
+  const [pantry] = useLocalStorage<string[]>("kitchenmate-pantry", []);
 
-  const settingsItems = [
-    { icon: User, label: "Personal Information" },
-    { icon: ChefHat, label: "Cooking Preferences" },
-    { icon: Settings, label: "Notification Settings" },
-    { icon: LogOut, label: "Sign Out", color: "text-red-500" },
+  const menuItems = [
+    { icon: User, label: "Personal Information", color: "#FF6B4A" },
+    { icon: Bell, label: "Notifications", color: "#4A90E2" },
+    { icon: Shield, label: "Security & Privacy", color: "#50E3C2" },
+    { icon: CreditCard, label: "Luxury Subscription", color: "#F5A623" },
+    { icon: Settings, label: "App Settings", color: "#777777" },
   ];
 
   return (
-    <div className="flex-1 flex flex-col p-6 pb-32">
-      <header className="mb-10 text-center flex flex-col items-center">
-        <motion.div 
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="w-24 h-24 rounded-[40px] bg-zinc-900 flex items-center justify-center text-white mb-4 shadow-2xl shadow-zinc-900/20 border-4 border-white"
-        >
-          <User className="w-10 h-10" />
-        </motion.div>
-        <h1 className="text-2xl font-bold font-outfit text-zinc-900">Rohit</h1>
-        <p className="text-zinc-500 text-sm">Member since May 2026</p>
+    <div className="flex-1 flex flex-col bg-[#FAF7F2] p-6 pb-32 font-inter relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-80 h-80 bg-orange-100/20 blur-[100px] -z-10" />
+
+      <header className="flex items-center justify-between mb-12 pt-4">
+        <Link href="/home" className="text-[#181818] p-2 -ml-2">
+          <ArrowLeft size={24} />
+        </Link>
+        <h1 className="text-[20px] font-bold text-[#181818]">Your Profile</h1>
+        <div className="w-10 h-10" />
       </header>
 
-      {/* Profile Stats */}
-      <div className="grid grid-cols-2 gap-4 mb-10">
-        <div className="bg-white border border-zinc-100 rounded-[32px] p-6 shadow-sm flex flex-col items-center">
-          <Refrigerator className="w-6 h-6 text-zinc-300 mb-2" />
-          <span className="text-xl font-bold font-outfit">{pantry.length}</span>
-          <span className="text-[10px] text-zinc-400 uppercase tracking-widest mt-1">Ingredients</span>
+      {/* AVATAR SECTION */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="flex flex-col items-center mb-12"
+      >
+        <div className="relative mb-6">
+          <div className="w-32 h-32 rounded-full border-4 border-white shadow-2xl overflow-hidden p-1 bg-white">
+            <img 
+              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=250&auto=format&fit=crop" 
+              alt="Rohit"
+              className="w-full h-full object-cover rounded-full"
+            />
+          </div>
+          <div className="absolute bottom-1 right-1 w-8 h-8 bg-[#FF6B4A] rounded-full border-2 border-white flex items-center justify-center text-white">
+            <div className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
+          </div>
         </div>
-        <div className="bg-white border border-zinc-100 rounded-[32px] p-6 shadow-sm flex flex-col items-center">
-          <Heart className="w-6 h-6 text-zinc-300 mb-2" />
-          <span className="text-xl font-bold font-outfit">{savedRecipes.length}</span>
-          <span className="text-[10px] text-zinc-400 uppercase tracking-widest mt-1">Favorites</span>
-        </div>
+        <h2 className="text-[28px] font-bold text-[#181818] mb-1 font-outfit">Rohit Sharma</h2>
+        <p className="text-[#777777] font-medium text-[14px]">Member since May 2024</p>
+      </motion.div>
+
+      {/* STATS CARDS */}
+      <div className="grid grid-cols-2 gap-4 mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-white rounded-[28px] p-6 flex flex-col items-center text-center shadow-premium border border-[#ECE7E1]/50"
+        >
+          <span className="text-[28px] font-bold text-[#181818]">{savedRecipes.length}</span>
+          <span className="text-[10px] font-bold text-[#777777] uppercase tracking-widest mt-1">Saved</span>
+        </motion.div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white rounded-[28px] p-6 flex flex-col items-center text-center shadow-premium border border-[#ECE7E1]/50"
+        >
+          <span className="text-[28px] font-bold text-[#181818]">{pantry.length}</span>
+          <span className="text-[10px] font-bold text-[#777777] uppercase tracking-widest mt-1">Ingredients</span>
+        </motion.div>
       </div>
 
-      {/* Settings Menu */}
-      <div className="bg-white border border-zinc-100 rounded-[32px] overflow-hidden shadow-sm">
-        {settingsItems.map((item, index) => (
-          <button 
-            key={item.label}
-            className={`w-full flex items-center p-5 hover:bg-zinc-50 transition-colors ${
-              index !== settingsItems.length - 1 ? "border-b border-zinc-100" : ""
-            }`}
-          >
-            <div className={`p-2 rounded-xl bg-zinc-50 mr-4 ${item.color || "text-zinc-900"}`}>
-              <item.icon className="w-5 h-5" />
-            </div>
-            <span className={`font-semibold text-sm ${item.color || "text-zinc-900"}`}>{item.label}</span>
-            <ChevronRight className="w-4 h-4 ml-auto text-zinc-300" />
-          </button>
-        ))}
+      {/* MENU LIST */}
+      <div className="space-y-4">
+        {menuItems.map((item, index) => {
+          const Icon = item.icon;
+          return (
+            <motion.button
+              key={item.label}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 + (index * 0.1) }}
+              className="w-full h-[78px] bg-white rounded-[24px] px-6 flex items-center justify-between border border-[#ECE7E1]/30 shadow-premium active:scale-[0.98] transition-all group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-11 h-11 rounded-2xl flex items-center justify-center transition-colors bg-[#FAF7F2] group-hover:bg-[#FFF5F0]">
+                  <Icon size={20} style={{ color: item.color }} />
+                </div>
+                <span className="text-[16px] font-bold text-[#181818]">{item.label}</span>
+              </div>
+              <ChevronRight size={20} className="text-[#D0C9C0] group-hover:text-[#181818] transition-colors" />
+            </motion.button>
+          );
+        })}
       </div>
 
-      <p className="text-center text-zinc-300 text-[10px] mt-10 uppercase tracking-widest font-bold">
-        KitchenMate v1.0.0
-      </p>
+      {/* LOGOUT */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        className="mt-12 flex items-center justify-center gap-3 text-red-500 font-bold text-[16px] w-full"
+      >
+        <LogOut size={20} />
+        Sign Out
+      </motion.button>
     </div>
   );
 }

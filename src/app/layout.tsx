@@ -20,13 +20,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${outfit.variable} antialiased bg-[#fcfbf9] text-zinc-900 min-h-screen flex flex-col font-inter`}
+        className={`${inter.variable} ${outfit.variable} antialiased bg-[#FAF7F2] text-[#181818] min-h-screen flex flex-col font-inter overflow-x-hidden`}
       >
-        <main className="flex-1 flex flex-col max-w-md mx-auto w-full relative">
-          {children}
-        </main>
-        <BottomNav />
-        <Toaster position="top-center" expand={false} richColors />
+        <div className="flex-1 flex flex-col max-w-[390px] mx-auto w-full relative min-h-screen bg-background shadow-[0_0_100px_rgba(0,0,0,0.05)]">
+          <main className="flex-1 flex flex-col w-full relative">
+            {children}
+          </main>
+          <BottomNav />
+          <Toaster position="top-center" expand={false} richColors />
+        </div>
       </body>
     </html>
   );
