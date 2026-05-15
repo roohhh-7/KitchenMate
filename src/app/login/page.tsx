@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChefHat, Mail, Lock, ArrowRight, Github, Chrome } from "lucide-react";
+import { ChefHat, Mail, Lock, ArrowRight, Globe, Terminal } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -146,11 +146,11 @@ export default function LoginPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <Button variant="outline" className="h-14 rounded-2xl border-zinc-100 bg-white hover:bg-zinc-50 font-semibold gap-2 shadow-sm">
-                  <Chrome size={18} className="text-zinc-600" />
+                  <Globe size={18} className="text-zinc-600" />
                   Google
                 </Button>
                 <Button variant="outline" className="h-14 rounded-2xl border-zinc-100 bg-white hover:bg-zinc-50 font-semibold gap-2 shadow-sm">
-                  <Github size={18} className="text-zinc-600" />
+                  <Terminal size={18} className="text-zinc-600" />
                   GitHub
                 </Button>
               </div>
