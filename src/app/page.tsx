@@ -1,78 +1,81 @@
 "use client";
 
 import Link from "next/link";
-import { ChefHat, ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 export default function LandingPage() {
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-[#fcfbf9] overflow-hidden relative">
-      {/* Decorative background elements */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[40%] bg-orange-100/50 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[40%] bg-zinc-100/50 blur-[120px] rounded-full" />
-      </div>
+    <div className="flex-1 flex flex-col min-h-screen bg-[#f9d7d7] items-center justify-center p-6 font-inter">
+      {/* Main Card */}
+      <motion.div 
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="w-full max-w-sm bg-white rounded-[48px] overflow-hidden shadow-2xl flex flex-col h-[85vh] relative"
+      >
+        {/* Top Section: Illustration */}
+        <div className="relative flex-1 flex items-center justify-center p-8 bg-[#f9d7d7]/30">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="w-full h-full relative"
+          >
+            {/* Using the generated image */}
+            <img 
+              src="/illustration.png" 
+              alt="Salad Bowl Illustration" 
+              className="w-full h-full object-contain"
+            />
+          </motion.div>
+        </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
-          animate={{ scale: 1, opacity: 1, rotate: 0 }}
-          transition={{ 
-            type: "spring",
-            stiffness: 260,
-            damping: 20,
-            duration: 0.6 
-          }}
-          className="w-24 h-24 bg-zinc-900 rounded-[32px] flex items-center justify-center text-white mb-10 shadow-2xl shadow-zinc-900/40 relative overflow-hidden group"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <ChefHat size={48} className="text-orange-500 relative z-10" />
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-          className="text-center"
-        >
-          <h1 className="text-6xl font-black tracking-tighter text-zinc-900 mb-4 font-outfit">
-            Kitchen<span className="text-orange-500">Mate</span>
-          </h1>
-          <p className="text-xl text-zinc-500 mb-14 max-w-[300px] mx-auto font-medium leading-relaxed">
-            Decide dinner in under <span className="text-zinc-900 font-bold px-2 py-0.5 bg-orange-100 rounded-lg text-orange-700">30 seconds</span>.
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
-          className="w-full max-w-[340px] flex flex-col gap-4"
-        >
-          <Link href="/login" className="w-full">
-            <Button size="lg" className="w-full h-18 text-xl rounded-3xl bg-zinc-900 hover:bg-zinc-800 text-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all hover:scale-[1.03] active:scale-[0.97] font-bold">
-              Get Started
-            </Button>
-          </Link>
+        {/* Bottom Section: Content */}
+        <div className="p-10 pb-12 flex flex-col items-center text-center">
+          <motion.span 
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-[#ff6b6b] font-bold text-sm tracking-wide mb-4"
+          >
+            30K+ PREMIUM RECIPES
+          </motion.span>
           
-          <Link href="/login" className="w-full">
-            <Button variant="outline" size="lg" className="w-full h-18 text-xl rounded-3xl border-2 border-zinc-100 bg-white hover:bg-zinc-50 shadow-sm transition-all hover:scale-[1.03] active:scale-[0.97] text-zinc-900 font-bold">
-              Sign In
-            </Button>
-          </Link>
-        </motion.div>
+          <motion.h1 
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="text-5xl font-black text-zinc-900 leading-[1.1] mb-12 font-outfit"
+          >
+            Cook like <br /> a chef
+          </motion.h1>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-12 flex items-center gap-2.5 text-zinc-400 text-sm font-bold tracking-tight bg-white/50 backdrop-blur-md px-5 py-2.5 rounded-full border border-zinc-100 shadow-sm"
-        >
-          <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-          <Sparkles size={16} className="text-orange-400" />
-          AI-POWERED ASSISTANT
-        </motion.div>
+          <motion.div
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="w-full"
+          >
+            <Link href="/login" className="w-full">
+              <Button 
+                size="lg" 
+                className="w-full h-18 rounded-3xl bg-[#ff6b6b] hover:bg-[#ff5252] text-white text-xl font-bold shadow-lg shadow-[#ff6b6b]/30 transition-transform active:scale-95"
+              >
+                Get Started
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Decorative shadow at the bottom of the image section */}
+        <div className="absolute top-[50%] left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+      </motion.div>
+
+      {/* Background blobs for extra flair */}
+      <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-white/20 blur-3xl rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-64 h-64 bg-white/20 blur-3xl rounded-full" />
       </div>
     </div>
   );
