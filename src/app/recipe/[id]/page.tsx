@@ -122,7 +122,7 @@ export default function RecipeDetail() {
             <div>
               <h3 className="text-[22px] font-bold text-[#181818] mb-8">Preparation</h3>
               <div className="space-y-10">
-                {recipe.instructions.map((step, i) => (
+                {recipe.cookingSteps.map((step, i) => (
                   <div key={i} className="relative pl-12 group">
                     <div className="absolute left-0 top-0 text-[48px] font-black text-[#FF6B4A]/10 select-none group-hover:text-[#FF6B4A]/20 transition-colors leading-none">
                       {(i + 1).toString().padStart(2, '0')}

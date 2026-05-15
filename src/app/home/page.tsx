@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { recipes } from "@/data/recipes";
+import { recipes, Recipe } from "@/data/recipes";
 import { motion } from "framer-motion";
 import { Clock, ChefHat, Sparkles, Heart } from "lucide-react";
 import { useLocalStorage } from "@/hooks/use-local-storage";

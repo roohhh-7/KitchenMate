@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, Settings, CreditCard, Bell, Shield, LogOut, ChevronRight, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLocalStorage } from "@/hooks/use-local-storage";
+import { Recipe } from "@/data/recipes";
 
 export default function ProfilePage() {
   const [savedRecipes] = useLocalStorage<Recipe[]>("kitchenmate-saved", []);
