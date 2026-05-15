@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { ArrowLeft, Plus, X, Search, Refrigerator as FridgeIcon } from "lucide-react";
+import { ArrowLeft, Plus, X, Search, Refrigerator as FridgeIcon, Sparkles } from "lucide-react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -159,7 +159,7 @@ export default function PantryPage() {
           ))}
         </div>
 
-        {pantry.length > 0 && (
+        {pantry.length > 0 ? (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

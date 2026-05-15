@@ -1,67 +1,37 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+@theme {
   --font-sans: var(--font-inter);
   --font-serif: var(--font-playfair);
   --font-heading: var(--font-playfair);
   
-  --color-primary: #FF6A1A;
-  --color-primary-foreground: #FFFFFF;
-  
-  --color-secondary: #7B8B6F;
-  --color-secondary-foreground: #FFFFFF;
-  
-  --color-muted: #F0EDE8;
-  --color-muted-foreground: #7B7B7B;
-  
-  --color-accent: #FF6A1A;
-  --color-accent-foreground: #FFFFFF;
-  
+  --color-background: #F6F3EE;
+  --color-foreground: #141414;
   --color-card: #FFFFFF;
   --color-card-foreground: #141414;
-  
+  --color-primary: #FF6A1A;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #7B8B6F;
+  --color-secondary-foreground: #FFFFFF;
+  --color-muted: #F0EDE8;
+  --color-muted-foreground: #7B7B7B;
+  --color-accent: #FF6A1A;
+  --color-accent-foreground: #FFFFFF;
   --color-border: #E5E1D8;
   --color-input: #E5E1D8;
+  --color-ring: #FF6A1A;
   
   --radius-xl: 24px;
   --radius-2xl: 32px;
   --radius-3xl: 40px;
 }
 
-:root {
-  --background: #F6F3EE;
-  --foreground: #141414;
-  --card: #FFFFFF;
-  --card-foreground: #141414;
-  --popover: #FFFFFF;
-  --popover-foreground: #141414;
-  --primary: #FF6A1A;
-  --primary-foreground: #FFFFFF;
-  --secondary: #7B8B6F;
-  --secondary-foreground: #FFFFFF;
-  --muted: #F0EDE8;
-  --muted-foreground: #7B7B7B;
-  --accent: #FF6A1A;
-  --accent-foreground: #FFFFFF;
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: #E5E1D8;
-  --input: #E5E1D8;
-  --ring: #FF6A1A;
-  --radius: 1.5rem;
-}
-
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
@@ -76,10 +46,4 @@
 
 .shadow-soft {
   box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
-}
-
-.fridge-shelf {
-  background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
-  border-bottom: 2px solid #e0e0e0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }

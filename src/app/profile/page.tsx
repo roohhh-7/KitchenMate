@@ -4,6 +4,7 @@ import Link from "next/link";
 import { User, Settings, Refrigerator, Heart, ChefHat, LogOut, ChevronRight, Award } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLocalStorage } from "@/hooks/use-local-storage";
+import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
   const [pantry] = useLocalStorage<string[]>("kitchenmate-pantry", []);
@@ -78,4 +79,4 @@ export default function ProfilePage() {
   );
 }
 
-import { cn } from "@/lib/utils";
+
