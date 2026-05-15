@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { BottomNav } from "@/components/bottom-nav";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 export const metadata: Metadata = {
   title: "KitchenMate | Decide dinner in under 30 seconds",
@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${playfair.variable} antialiased bg-[#F6F3EE] text-[#141414] min-h-screen flex flex-col font-inter`}
+        className={`${inter.variable} ${outfit.variable} antialiased bg-[#fcfbf9] text-zinc-900 min-h-screen flex flex-col font-inter`}
       >
         <main className="flex-1 flex flex-col max-w-md mx-auto w-full relative">
           {children}
