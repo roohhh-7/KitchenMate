@@ -15,78 +15,74 @@ export async function POST(request: Request) {
       );
     }
 
-    const systemPrompt = `You are KitchenMate, a minimalist and intelligent cooking assistant.
-Your goal is to suggest EXACTLY 3 recipes from the provided recipe dataset that the user can cook based on their pantry ingredients.
+    // Sanitize input: only allow strings, remove excessive length and suspicious characters
+    const sanitizedPantry = pantry
+      .filter((item): item is string => typeof item === "string")
+      .map(item => item.trim().replace(/[^a-zA-Z0-9\s-]/g, '').slice(0, 50))
+      .filter(item => item.length > 0);
 
-Prioritize recipes where the user has most of the ingredients.
-If there are no strong matches, suggest near matches and explain what is missing.
-Only use recipes from the provided dataset. Do NOT hallucinate recipes.
-Focus on simplicity and reducing decision fatigue.
-
-Recipe Dataset:
-${JSON.stringify(recipes.map(r => ({ id: r.id, title: r.title, ingredients: r.ingredients, cookTime: r.cookTime, difficulty: r.difficulty })), null, 2)}`;
-
-    const userPrompt = `My pantry ingredients are: ${pantry.join(", ")}. Please suggest 3 recipes.`;
-
-    const model = genAI.getGenerativeModel({
-      model: "gemini-flash-latest",
-      systemInstruction: systemPrompt,
-      generationConfig: {
-        temperature: 0.7,
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: SchemaType.OBJECT,
-          properties: {
-            recipes: {
-              type: SchemaType.ARRAY,
-              items: {
-                type: SchemaType.OBJECT,
-                properties: {
-                  id: { type: SchemaType.STRING },
-                  title: { type: SchemaType.STRING },
-                  description: { type: SchemaType.STRING },
-                  cookTime: { type: SchemaType.STRING },
-                  matchPercentage: { type: SchemaType.NUMBER },
-                  missingIngredients: {
-                    type: SchemaType.ARRAY,
-                    items: { type: SchemaType.STRING }
-                  },
-                  reason: { type: SchemaType.STRING }
-                },
-                required: ["id", "title", "description", "cookTime", "matchPercentage", "missingIngredients", "reason"]
-              }
-            }
-          },
-          required: ["recipes"]
-        }
-      }
-    });
-
-    const result = await model.generateContent(userPrompt);
-    const content = result.response.text();
-
-    if (!content) {
-      throw new Error("No response from Gemini");
+    if (sanitizedPantry.length === 0) {
+      return NextResponse.json(
+        { error: "Invalid pantry items provided." },
+        { status: 400 }
+      );
     }
 
-    const parsed = JSON.parse(content);
+    // PAUSED GEMINI INTEGRATION (Mockup Mode)
+    // The following code simulates an AI response to prevent API abuse during the mockup phase.
 
-    // Enrich with actual recipe data (like image, full steps)
-    const enrichedRecipes = parsed.recipes.map((aiRecipe: any) => {
-      const fullRecipe = recipes.find(r => r.id === aiRecipe.id);
+    // 1. Find recipes that have at least one matching ingredient
+    const matchedRecipes = recipes.filter(recipe => 
+      recipe.ingredients.some(ing => 
+        sanitizedPantry.some(pItem => ing.toLowerCase().includes(pItem.toLowerCase()) || pItem.toLowerCase().includes(ing.toLowerCase()))
+      )
+    );
+
+    // 2. Fallback to random recipes if no match
+    let selectedRecipes = matchedRecipes.length >= 3 ? matchedRecipes : recipes;
+
+    // 3. Pick top 3 (or random 3)
+    // Simple deterministic shuffle based on pantry length to make it look "dynamic"
+    const shuffled = [...selectedRecipes].sort(() => 0.5 - Math.random());
+    const top3 = shuffled.slice(0, 3);
+
+    // 4. Format them to match the expected UI schema
+    const enrichedRecipes = top3.map(recipe => {
+      // Calculate a fake match percentage
+      const matchedCount = recipe.ingredients.filter(ing => 
+        sanitizedPantry.some(p => ing.toLowerCase().includes(p.toLowerCase()))
+      ).length;
+      
+      const matchPercentage = Math.max(30, Math.round((matchedCount / recipe.ingredients.length) * 100));
+      
+      const missingIngredients = recipe.ingredients.filter(ing => 
+        !sanitizedPantry.some(p => ing.toLowerCase().includes(p.toLowerCase()))
+      );
+
       return {
-        ...aiRecipe,
-        imageUrl: fullRecipe?.imageUrl || "https://images.unsplash.com/photo-1495521821757-a1efb6729352?q=80&w=600&auto=format&fit=crop",
-        fullRecipe
+        id: recipe.id,
+        title: recipe.title,
+        description: recipe.description,
+        cookTime: recipe.cookTime,
+        matchPercentage,
+        missingIngredients: missingIngredients.slice(0, 3), // Just show a few missing
+        reason: matchedCount > 0 
+          ? `Great match! You already have some key ingredients like ${sanitizedPantry[0]}.` 
+          : "We thought you might like this classic recipe to try something new.",
+        imageUrl: recipe.imageUrl,
+        fullRecipe: recipe
       };
     });
+
+    // Simulate network delay for realism
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
     return NextResponse.json({ recipes: enrichedRecipes });
 
   } catch (error: any) {
     console.error("Suggestions API Error:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to generate suggestions. Please try again later.", stack: error.stack },
+      { error: "Failed to generate suggestions. Please try again later." },
       { status: 500 }
     );
   }
