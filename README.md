@@ -2,6 +2,8 @@
 
 KitchenMate is a minimal, AI-powered web MVP designed to help users move from "What should I cook?" to "Start cooking now" in under 30 seconds. By focusing on ingredients you already have, KitchenMate provides curated meal suggestions to reduce decision fatigue.
 
+Full case study here: https://app.notion.com/p/KitchenMate-product-case-study-3578fab9854d8023ade0e43144604195
+
 ## Features
 - **Pantry Management**: Easily add and remove ingredients you have on hand.
 - **Smart Suggestions**: Get exactly 3 curated recipe suggestions based on your pantry, powered by Gemini.
