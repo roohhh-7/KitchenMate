@@ -4,9 +4,54 @@ import { recipes } from "@/data/recipes";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "dummy");
 
+const rateLimitMap = new Map<string, { count: number, resetTime: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const limitInfo = rateLimitMap.get(ip);
+  if (!limitInfo || now > limitInfo.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + 60000 }); // 60 seconds
+    return false;
+  }
+  if (limitInfo.count >= 5) { // Max 5 requests per minute
+    return true; 
+  }
+  limitInfo.count++;
+  return false;
+}
+
 export async function POST(request: Request) {
   try {
-    const { pantry } = await request.json();
+    // 0. Strict Rate Limiting (5 requests per minute per IP)
+    const ip = request.headers.get("x-forwarded-for") || "unknown-ip";
+    if (checkRateLimit(ip)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again in a minute." },
+        { status: 429 }
+      );
+    }
+
+    // 1. Reject Oversized Payloads (Limit to ~5KB)
+    const rawBody = await request.text();
+    if (rawBody.length > 5120) {
+      return NextResponse.json(
+        { error: "Payload too large." },
+        { status: 413 }
+      );
+    }
+
+    // 2. Safely parse JSON to handle malformed payloads
+    let parsedBody;
+    try {
+      parsedBody = JSON.parse(rawBody);
+    } catch (e) {
+      return NextResponse.json(
+        { error: "Invalid JSON payload." },
+        { status: 400 }
+      );
+    }
+
+    const { pantry } = parsedBody;
 
     if (!pantry || !Array.isArray(pantry) || pantry.length === 0) {
       return NextResponse.json(
@@ -15,11 +60,12 @@ export async function POST(request: Request) {
       );
     }
 
-    // Sanitize input: only allow strings, remove excessive length and suspicious characters
+    // 3. Sanitize input: only allow strings, remove excessive length and suspicious characters, and limit array size
     const sanitizedPantry = pantry
       .filter((item): item is string => typeof item === "string")
       .map(item => item.trim().replace(/[^a-zA-Z0-9\s-]/g, '').slice(0, 50))
-      .filter(item => item.length > 0);
+      .filter(item => item.length > 0)
+      .slice(0, 20); // Cap at 20 ingredients to prevent abuse
 
     if (sanitizedPantry.length === 0) {
       return NextResponse.json(
